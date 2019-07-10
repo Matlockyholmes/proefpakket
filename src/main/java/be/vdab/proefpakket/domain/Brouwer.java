@@ -1,5 +1,7 @@
 package be.vdab.proefpakket.domain;
 
+import be.vdab.proefpakket.constraints.Ondernemingsnr;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,6 +15,7 @@ public class Brouwer implements Serializable {
     private String naam;
     @Embedded
     private Adres adres;
+    @Ondernemingsnr
     private Long ondernemingsNr;
     
     protected Brouwer() {
@@ -38,5 +41,9 @@ public class Brouwer implements Serializable {
 
     public Long getOndernemingsNr() {
         return ondernemingsNr;
+    }
+
+    public void setOndernemingsNr(Long ondernemingsNr) {
+        this.ondernemingsNr = ondernemingsNr;
     }
 }

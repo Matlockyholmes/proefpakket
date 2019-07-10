@@ -21,4 +21,10 @@ class DefaultBrouwerService implements BrouwerService {
     public List<Brouwer> findByBeginNaam(String beginNaam) {
         return brouwerRepository.findByNaamStartingWithOrderByNaam(beginNaam);
     }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+    public void updateBrouwer(Brouwer brouwer) {
+        brouwerRepository.save(brouwer);
+    }
 }

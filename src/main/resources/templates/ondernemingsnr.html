@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="fragments::head(title=${brouwer.naam})">
+</head>
+<body>
+<h1>Ondernemingsnummer <span th:text="${brouwer.naam}"></span></h1>
+<form method="post" th:action="@{/brouwers/ondernemingsnr/{id}(id=${brouwer.id})}" th:object="${ondernemingsnrForm}">
+    <label>Ondernernemingsnummer:
+        <span th:errors="*{ondernemingsnr}"></span>
+        <input th:field="*{ondernemingsnr}" type="number" autofocus>
+    </label>
+    <input type="submit" value="Invoegen">
+</form>
+</body>
+</html>
