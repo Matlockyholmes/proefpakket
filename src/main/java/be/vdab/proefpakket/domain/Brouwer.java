@@ -4,6 +4,7 @@ import be.vdab.proefpakket.constraints.Ondernemingsnr;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="brouwers")
