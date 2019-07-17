@@ -41,21 +41,18 @@ public class BestellingController {
     }
 
     @PostMapping(value = "aanvragen/{optionalBrouwer}", params = "stap2")
-    public ModelAndView naarStap2(@Validated(Bestelling.Stap1.class) Bestelling bestelling, Errors errors, @PathVariable Optional<Brouwer> optionalBrouwer){
-        ModelAndView modelAndView;
-        if(optionalBrouwer.isPresent()) {
-
-           if (errors.hasErrors()) {
-               modelAndView = new ModelAndView("bestelling");
-           } else {
-               modelAndView = new ModelAndView("bestellingStap2").addObject(optionalBrouwer.get())
-                       .addObject("gemeentes", gemeenteService.findAll());
-           }
-       }
-        modelAndView = new ModelAndView("bestellingStap2");
-//        optionalBrouwer.ifPresent(brouwer -> modelAndView.addObject(brouwer));
-        return modelAndView;
-    }
+    public ModelAndView naarStap2(@Validated(Bestelling.Stap1.class) Bestelling bestelling, Errors errors, @PathVariable Optional<Brouwer> optionalBrouwer)
+        {
+            if (optionalBrouwer.isPresent()) {
+                Brouwer brouwer = optionalBrouwer.get();
+                if (errors.hasErrors()) {
+                    return new ModelAndView("bestelling").addObject(brouwer);
+                }
+                return new ModelAndView("bestellingStap2").addObject(brouwer)
+                        .addObject("gemeentes", gemeenteService.findAll());
+            }
+            return new ModelAndView("bestellingStap2");
+        }
 
     @PostMapping(value = "aanvragen/{optionalBrouwer}", params = "stap1")
     public ModelAndView naarStap1(Bestelling bestelling, @PathVariable Optional<Brouwer> optionalBrouwer){
@@ -64,18 +61,16 @@ public class BestellingController {
         return modelAndView;
     }
 
-    @PostMapping(value = "aanvragen/{optionalBrouwer}", params = "opslaan")
+    @PostMapping(value = "aanvragen/{brouwer}", params = "opslaan")
     public ModelAndView create(@Validated(Bestelling.Stap2.class) Bestelling bestelling, Errors errors,
-                               SessionStatus sessionStatus, @PathVariable Optional<Brouwer> optionalBrouwer){
-        ModelAndView modelAndView;
+                               SessionStatus sessionStatus, @PathVariable Brouwer brouwer){
         if (errors.hasErrors()){
-            modelAndView = new ModelAndView("bestellingStap2", "gemeentes", gemeenteService.findAll());
-            optionalBrouwer.ifPresent(brouwer -> modelAndView.addObject(brouwer));
+            ModelAndView modelAndView = new ModelAndView("bestellingStap2", "gemeentes", gemeenteService.findAll())
+                    .addObject("brouwer", brouwer);
             return modelAndView;
         }
         bestellingService.createBestelling(bestelling);
-        modelAndView = new ModelAndView("redirect:/");
         sessionStatus.setComplete();
-        return modelAndView;
+        return new ModelAndView("redirect:/");
     }
 }
