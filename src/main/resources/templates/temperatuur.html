@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::head(title='temperatuur ' + ${plaats})">
+</head>
+<body>
+<div th:if="${temperatuur} == null" class="fout">Kan temperatuur niet ophalen.</div>
+<div th:if="${temperatuur} != null">De temperatuur in <span th:text="${plaats}"></span> is
+<span th:text="${temperatuur}"></span> graden.</div>
+</body>
+</html>
