@@ -21,12 +21,12 @@ public class DefaultMailSender implements MailSender {
     }
 
     @Override
-    public void nieuweAanvraag(Bestelling bestelling) {
+    public void nieuweAanvraag(String emailadres, String brouwernaam) {
         try{
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setTo(bestelling.getEmailAdres());
-            helper.setText("Bedankt voor uw interesse. U ontvangt uw proefpakket " + bestelling.getBrouwer().getNaam() + " binnenkort.");
+            helper.setTo(emailadres);
+            helper.setText("Bedankt voor uw interesse. U ontvangt uw proefpakket " + brouwernaam + " binnenkort.");
             javaMailSender.send(message);
         } catch (MessagingException ex) {
             logger.error("Kan mail nieuwe bestelling niet verzenden",ex);
